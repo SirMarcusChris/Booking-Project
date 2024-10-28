@@ -41,7 +41,7 @@ class ApiClient:
 
     def post(self, endpoint, data=None, status_code=200):
         url = self.base_url + endpoint
-        response = requests.post(url,headers=self.headers, params=params)
+        response = requests.post(url,headers=self.headers, json=data)
         if status_code:
             assert response.status_code == status_code
         return response.json()

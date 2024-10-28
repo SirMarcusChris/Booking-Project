@@ -12,7 +12,7 @@ load_dotenv()
 
 class ApiClient:
     def __init__(self):
-        environment_str  = os.getenv('ENVIRONMENT')
+        environment_str = os.getenv('ENVIRONMENT')
         try:
             environment = Environment[environment_str]
         except KeyError:
@@ -36,14 +36,14 @@ class ApiClient:
         self.session = requests.Session() # Держать сессию открытой
         response = requests.get(url, headers=self.headers, params=params)
         if status_code:
-            assert response.status_code ==status_code
+            assert response.status_code == status_code
         return response.json()
 
     def post(self, endpoint, data=None, status_code=200):
         url = self.base_url + endpoint
-        response = requests.post(url,headers=self.headers,params=params)
+        response = requests.post(url,headers=self.headers, params=params)
         if status_code:
-            assert response.status_code ==status_code
+            assert response.status_code == status_code
         return response.json()
 
     def ping(self):
@@ -67,9 +67,9 @@ class ApiClient:
         with allure.step('Updating header with authorization'):
             self.session.headers.update({"Authorization": f"Bearer {token}"})
 
-    def get_booking_by_id(self):
+    def get_booking_by_id(self, url_id):
         with allure.step('Getting bookings by IDs'):
-            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}/1"
+            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}{url_id}"
             response = self.session.get(url, timeout=Timeouts.TIMEOUT)
             response.raise_for_status()
         with allure.step('Checking status code'):

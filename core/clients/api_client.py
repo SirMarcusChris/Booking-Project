@@ -69,7 +69,7 @@ class ApiClient:
 
     def get_booking_by_id(self, id):
         with allure.step('Getting bookings by IDs'):
-            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}{id}"
+            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}/{id}"
             response = self.session.get(url, timeout=Timeouts.TIMEOUT)
             response.raise_for_status()
         with allure.step('Checking status code'):

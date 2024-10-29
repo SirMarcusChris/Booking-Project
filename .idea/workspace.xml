@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="47104ee0-6543-410f-9e4b-3fb8781ad0f4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/clients/api_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/clients/api_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +132,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/create_get_booking_by_id_method" />
+                        <option value="create_get_booking_by_id_method" />
                       </list>
                     </value>
                   </entry>

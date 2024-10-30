@@ -5,6 +5,7 @@ from core.settings.environments import Environment
 from core.clients.endpoints import Endpoints
 from core.clients.endpoints import Endpoints
 from core.settings.config import Users, Timeouts
+from requests.auth import HTTPBasicAuth
 import allure
 
 
@@ -67,11 +68,18 @@ class ApiClient:
         with allure.step('Updating header with authorization'):
             self.session.headers.update({"Authorization": f"Bearer {token}"})
 
-    def get_booking_by_id(self, id):
+    def get_booking_by_id(self, booking_id):
         with allure.step('Getting bookings by IDs'):
-            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}/{id}"
+            url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT}/{booking_id}"
             response = self.session.get(url, timeout=Timeouts.TIMEOUT)
             response.raise_for_status()
         with allure.step('Checking status code'):
             assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
         return response.json()
+
+    def delete_booking(self, booking_id):
+        with allure.step('Deleting booking'):
+            url = f"{self.base_url}/booking/{booking_id}"
+            response = self.session.delete(url, auth=HTTPBasicAuth(Users.USERNAME, Users.PASSWORD))  # base64 coding
+        # and adding in authorization token
+        

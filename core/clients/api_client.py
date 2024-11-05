@@ -3,12 +3,12 @@ import os
 from dotenv import load_dotenv  # .env file parsing function
 from core.settings.environments import Environment
 from core.clients.endpoints import Endpoints
-from core.clients.endpoints import Endpoints
 from core.settings.config import Users, Timeouts
 from requests.auth import HTTPBasicAuth
 import allure
 
 load_dotenv()
+
 
 class ApiClient:
     def __init__(self):
@@ -19,6 +19,7 @@ class ApiClient:
             raise ValueError(f"Unsupported environment value: {environment_str}")
 
         self.base_url = self.get_base_url(environment)
+        self.session = requests.Session()
         self.session.headers = {
             'Content-Type': 'application/json'
         }

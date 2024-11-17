@@ -10,12 +10,18 @@ from conftest import generate_random_booking_data
 def test_create_booking(api_client, generate_random_booking_data):
     response = api_client.create_booking(generate_random_booking_data)
 
-    assert response['booking']['firstname'] == generate_random_booking_data['firstname']
-    assert response['booking']['lastname'] == generate_random_booking_data['lastname']
-    assert response['booking']['totalprice'] == generate_random_booking_data['totalprice']
-    assert response['booking']['depositpaid'] == generate_random_booking_data['depositpaid']
-    assert response['booking']['bookingdates']['checkin'] == generate_random_booking_data['bookingdates']['checkin']
-    assert response['booking']['bookingdates']['checkout'] == generate_random_booking_data['bookingdates']['checkout']
+    with allure.step('Check create booking firstname'):
+        assert response['booking']['firstname'] == generate_random_booking_data['firstname']
+    with allure.step('Check create booking lastname'):
+        assert response['booking']['lastname'] == generate_random_booking_data['lastname']
+    with allure.step('Check create booking totalprice'):
+        assert response['booking']['totalprice'] == generate_random_booking_data['totalprice']
+    with allure.step('Check create booking depositpaid'):
+        assert response['booking']['depositpaid'] == generate_random_booking_data['depositpaid']
+    with allure.step('Check create booking bookingdates_checkin'):
+        assert response['booking']['bookingdates']['checkin'] == generate_random_booking_data['bookingdates']['checkin']
+    with allure.step('Check create booking bookingdates_checkout'):
+        assert response['booking']['bookingdates']['checkout'] == generate_random_booking_data['bookingdates']['checkout']
 
 @allure.feature('Test create booking')
 @allure.story('Test server unavailability')

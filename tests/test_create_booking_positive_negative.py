@@ -115,7 +115,7 @@ def test_create_booking_with_empty_body(api_client, mocker):
 
 
 @allure.feature('Test creating booking')
-@allure.story('Negative: missing empty fields')
+@allure.story('Negative: missing required fields')
 def test_create_booking_with_missing_required_fields(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 400

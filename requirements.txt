@@ -1,0 +1,6 @@
+pydantic==2.10.0b2
+requests==2.32.3
+allure-python-commons==2.13.5
+python-dotenv==1.0.1
+pytest==8.3.3
+Faker==30.8.2

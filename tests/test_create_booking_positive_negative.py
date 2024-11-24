@@ -1,6 +1,7 @@
+import json
 from nis import match
 from venv import create
-
+from core.validators import verify_booking_response
 import allure
 from pydantic import ValidationError, BaseModel
 from conftest import generate_random_booking_data
@@ -30,20 +31,7 @@ def test_create_booking_with_custom_data(api_client):
     except ValidationError as e:
         raise ValidationError(f"Response validation failed: {e}")
 
-    with allure.step('Check create booking firstname'):
-        assert response['booking']['firstname'] == booking_data['firstname']
-    with allure.step('Check create booking lastname'):
-        assert response['booking']['lastname'] == booking_data['lastname']
-    with allure.step('Check create booking totalprice'):
-        assert response['booking']['totalprice'] == booking_data['totalprice']
-    with allure.step('Check create booking depositpaid'):
-        assert response['booking']['depositpaid'] == booking_data['depositpaid']
-    with allure.step('Check create booking bookingdates_checkin'):
-        assert response['booking']['bookingdates']['checkin'] == booking_data['bookingdates']['checkin']
-    with allure.step('Check create booking bookingdates_checkout'):
-        assert response['booking']['bookingdates']['checkout'] == booking_data['bookingdates']['checkout']
-    with allure.step('Check create booking additionalneeds_checkout'):
-        assert response['booking']['additionalneeds'] == booking_data['additionalneeds']
+    verify_booking_response(response, booking_data)  # checking response
 
 
 @allure.feature('Test creating booking')
@@ -66,18 +54,7 @@ def test_create_booking_with_required_fields(api_client):
     except ValidationError as e:
         raise ValidationError(f"Response validation failed: {e}")
 
-    with allure.step('Check create booking firstname'):
-        assert response['booking']['firstname'] == booking_data['firstname']
-    with allure.step('Check create booking lastname'):
-        assert response['booking']['lastname'] == booking_data['lastname']
-    with allure.step('Check create booking totalprice'):
-        assert response['booking']['totalprice'] == booking_data['totalprice']
-    with allure.step('Check create booking depositpaid'):
-        assert response['booking']['depositpaid'] == booking_data['depositpaid']
-    with allure.step('Check create booking bookingdates_checkin'):
-        assert response['booking']['bookingdates']['checkin'] == booking_data['bookingdates']['checkin']
-    with allure.step('Check create booking bookingdates_checkout'):
-        assert response['booking']['bookingdates']['checkout'] == booking_data['bookingdates']['checkout']
+    verify_booking_response(response, booking_data)  # checking response
 
 
 @allure.feature('Test creating booking')
@@ -136,17 +113,8 @@ def test_create_booking_with_missing_required_fields(api_client, mocker):
 def test_create_booking_with_invalid_data_type(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 400
-    body = {
-    "firstname": 123,
-    "lastname": True,
-    "totalprice": "one hundred",
-    "depositpaid": "yes",
-    "bookingdates": {
-        "checkin": "invalid-date",
-        "checkout": "2023-12-10"
-    },
-    "additionalneeds": {}
-}
+    json_file = open('/Users/admin/PycharmProjects/Booking_Project2/core/invalid_data_type.json')
+    body = json.load(json_file)
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Required fields are not formatted correctly. Expected status 200 but got 400"))
     with pytest.raises(Exception, match="Required fields are not formatted correctly. Expected status 200 but got 400"):
         api_client.create_booking(body)

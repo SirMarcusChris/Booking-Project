@@ -2,3 +2,4 @@ venv
 allure-reports
 .idea
 __pycache__
+allure-results

@@ -7,7 +7,7 @@ from conftest import generate_random_booking_data
 from core.models.booking import BookingResponse
 import pytest
 import requests
-
+from nis import match
 
 @allure.feature('Test creating booking')
 @allure.story('Positive: creating booking with custom data')

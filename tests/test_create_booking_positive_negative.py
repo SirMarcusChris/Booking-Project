@@ -48,12 +48,12 @@ def test_create_booking_with_required_fields(api_client):
 }
 
     response = api_client.create_booking(booking_data)
-    # try:
-    #     BookingResponse(**response)
-    # except ValidationError as e:
-    #     raise ValidationError(f"Response validation failed: {e}")
-    #
-    # verify_booking_response(response, booking_data)  # checking response
+    try:
+        BookingResponse(**response)
+    except ValidationError as e:
+        raise ValidationError(f"Response validation failed: {e}")
+
+    verify_booking_response(response, booking_data)  # checking response
 
 
 @allure.feature('Test creating booking')
@@ -86,8 +86,8 @@ def test_create_booking_with_empty_body(api_client, mocker):
     mock_response.status_code = 400
     body = {}
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("No required fields. Expected status 200 but got 400"))
-    # with pytest.raises(Exception, match="No required fields. Expected status 200 but got 400"):
-    #     api_client.create_booking(body)
+    with pytest.raises(Exception, match="No required fields. Expected status 200 but got 400"):
+        api_client.create_booking(body)
 
 
 @allure.feature('Test creating booking')
@@ -104,8 +104,8 @@ def test_create_booking_with_missing_required_fields(api_client, mocker):
     }
 }
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("The 'totalprice' and 'depositpaid' fields are required. Expected status 200 but got 400"))
-    # with pytest.raises(Exception,match="The 'totalprice' and 'depositpaid' fields are required. Expected status 200 but got 400"):
-    #     api_client.create_booking(body)
+    with pytest.raises(Exception,match="The 'totalprice' and 'depositpaid' fields are required. Expected status 200 but got 400"):
+        api_client.create_booking(body)
 
 @allure.feature('Test creating booking')
 @allure.story('Negative: invalid data type')
@@ -115,8 +115,8 @@ def test_create_booking_with_invalid_data_type(api_client, mocker):
     json_file = open('/Users/admin/PycharmProjects/Booking_Project2/core/invalid_data_type.json')
     body = json.load(json_file)
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Required fields are not formatted correctly. Expected status 200 but got 400"))
-    # with pytest.raises(Exception, match="Required fields are not formatted correctly. Expected status 200 but got 400"):
-    #     api_client.create_booking(body)
+    with pytest.raises(Exception, match="Required fields are not formatted correctly. Expected status 200 but got 400"):
+        api_client.create_booking(body)
 
 
 @allure.feature('Test creating booking')
@@ -135,8 +135,8 @@ def test_create_booking_with_logic_error(api_client, mocker):
     }
 }
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Checkin date must be before checkout date. Expected status 200 but got 422"))
-    # with pytest.raises(Exception, match="Checkin date must be before checkout date. Expected status 200 but got 422"):
-    #     api_client.create_booking(body)
+    with pytest.raises(Exception, match="Checkin date must be before checkout date. Expected status 200 but got 422"):
+        api_client.create_booking(body)
 
 
 @allure.feature('Test creating booking')
@@ -155,16 +155,16 @@ def test_create_booking_with_negative_price(api_client, mocker):
     }
 }
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Price cannot be negative. Expected status 200 but got 400"))
-    # with pytest.raises(Exception, match="Price cannot be negative. Expected status 200 but got 400"):
-    #     api_client.create_booking(body)
+    with pytest.raises(Exception, match="Price cannot be negative. Expected status 200 but got 400"):
+        api_client.create_booking(body)
 
 
 @allure.feature('Test create booking')
 @allure.story('Negative: test server unavailability')
 def test_ping_server_anavailability(api_client, mocker):
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Server unavailable"))
-    # with pytest.raises(Exception, match="Server unavailable"):
-    #     api_client.create_booking(generate_random_booking_data)
+    with pytest.raises(Exception, match="Server unavailable"):
+        api_client.create_booking(generate_random_booking_data)
 
 
 @allure.feature('Test create booking')
@@ -173,8 +173,8 @@ def test_create_booking_wrong_method(api_client, mocker, generate_random_booking
     mock_response = mocker.Mock()
     mock_response.status_code = 405
     mocker.patch.object(api_client.session, 'post', return_value=mock_response)
-    # with pytest.raises(AssertionError, match=f"Expected status 200 but got 405"):
-    #     api_client.create_booking(generate_random_booking_data)
+    with pytest.raises(AssertionError, match=f"Expected status 200 but got 405"):
+        api_client.create_booking(generate_random_booking_data)
 
 
 @allure.feature('Test create booking')
@@ -183,8 +183,8 @@ def test_create_booking_internal_server_error(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 500
     mocker.patch.object(api_client.session, 'post', return_value=mock_response)
-    # with pytest.raises(AssertionError, match="Expected status 200 but got 500"):
-    #     api_client.create_booking(generate_random_booking_data)
+    with pytest.raises(AssertionError, match="Expected status 200 but got 500"):
+        api_client.create_booking(generate_random_booking_data)
 
 
 @allure.feature('Test create booking')
@@ -193,8 +193,8 @@ def test_create_booking_not_found(api_client, mocker, generate_random_booking_da
     mock_response = mocker.Mock()
     mock_response.status_code = 404
     mocker.patch.object(api_client.session, 'post', return_value=mock_response)
-    # with pytest.raises(AssertionError, match=f"Expected status 200 but got 404"):
-    #     api_client.create_booking(generate_random_booking_data)
+    with pytest.raises(AssertionError, match=f"Expected status 200 but got 404"):
+        api_client.create_booking(generate_random_booking_data)
 
 
 @allure.feature('Test create booking')
@@ -203,8 +203,8 @@ def test_ping_success_different_code(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 201
     mocker.patch.object(api_client.session, 'post', return_value=mock_response)
-    # with pytest.raises(AssertionError, match="Expected status 200 but got 201"):
-    #     api_client.create_booking(generate_random_booking_data)
+    with pytest.raises(AssertionError, match="Expected status 200 but got 201"):
+        api_client.create_booking(generate_random_booking_data)
 
 
 @allure.feature('Test ping')

@@ -111,7 +111,7 @@ def test_create_booking_with_missing_required_fields(api_client, mocker):
 def test_create_booking_with_invalid_data_type(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 400
-    json_file = open('/Users/admin/PycharmProjects/Booking_Project2/core/invalid_data_type.json')
+    json_file = open('core/invalid_data_type.json')
     body = json.load(json_file)
     mocker.patch.object(api_client.session, 'post', side_effect=Exception("Required fields are not formatted correctly. Expected status 200 but got 400"))
     with pytest.raises(Exception, match="Required fields are not formatted correctly. Expected status 200 but got 400"):
